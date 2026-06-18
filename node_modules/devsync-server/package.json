@@ -1,0 +1,1 @@
+﻿{"name":"devsync-server","version":"0.1.0","private":true,"main":"src/app.ts","scripts":{"dev":"ts-node-dev --respawn src/app.ts"},"dependencies":{},"devDependencies":{},"license":"MIT"}
