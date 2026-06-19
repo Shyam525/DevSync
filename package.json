@@ -4,6 +4,9 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+    "dev": "concurrently \"npm --workspace packages/client run dev\" \"npm --workspace packages/server run dev\"",
+    "build": "npm --workspace packages/client run build && npm --workspace packages/server run build",
+    "lint": "npm --workspace packages/client run lint",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
