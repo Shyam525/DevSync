@@ -4,18 +4,16 @@
 //   return createClient({ url });
 // }
 
-
 import Redis from 'ioredis';
 import { logger } from '../logger';
 import { env } from './env';
 
-// Create the Redis client — lazyConnect means it does NOT connect immediately
-// We call .connect() explicitly in app.ts during startup
 export const redisClient = new Redis(env.REDIS_URL, {
   lazyConnect: true,
   maxRetriesPerRequest: 3,      // Retry failed commands up to 3 times
   enableReadyCheck: true,       // Wait until Redis is fully ready before resolving
 });
+
 
 // Event listeners for observability
 redisClient.on('connect', () => logger.info('Redis connected'));
