@@ -1,15 +1,17 @@
 <div align="center">
 
 ```
-██████╗ ███████╗██╗   ██╗███████╗██╗   ██╗███╗   ██╗ ██████╗
-██╔══██╗██╔════╝██║   ██║██╔════╝╚██╗ ██╔╝████╗  ██║██╔════╝
-██║  ██║█████╗  ██║   ██║███████╗ ╚████╔╝ ██╔██╗ ██║██║
-██║  ██║██╔══╝  ╚██╗ ██╔╝╚════██║  ╚██╔╝  ██║╚██╗██║██║
-██████╔╝███████╗ ╚████╔╝ ███████║   ██║   ██║ ╚████║╚██████╗
-╚═════╝ ╚══════╝  ╚═══╝  ╚══════╝   ╚═╝   ╚═╝  ╚═══╝ ╚═════╝
+     _            _____
+    | |          / ____|
+  __| | _____   _\ (___ _   _ _ __   ___
+ / _` |/ _ \ \ / /\___ \ | | | '_ \ / __|
+| (_| |  __/\ V / ____) | |_| | | | | (__
+ \__,_|\___| \_/ |_____/ \__, |_| |_|\___|
+                           __/ |
+                          |___/
 ```
 
-### Real-time developer collaboration. Built for engineers who ship.
+<h3>Real-time developer collaboration. Built for engineers who ship.</h3>
 
 <br/>
 
@@ -40,14 +42,12 @@ It is not another project management tool. It is built specifically for engineer
 
 Everything is real-time. Every team member's cursor is visible. Every task move is instant. Every GitHub push appears without refreshing.
 
-```
-What devSync solves                     What devSync replaces
-─────────────────────────────────────   ────────────────────────────────────
-"Can you look at this code with me?"    Screen sharing a code editor
-"Which PR caused this bug?"             Switching between GitHub and Jira
-"Who is working on what right now?"     Daily standups for status updates
-"Where did we discuss that decision?"   Searching Slack history for context
-```
+| What devSync solves | What devSync replaces |
+|---|---|
+| "Can you look at this code with me?" | Screen sharing a code editor |
+| "Which PR caused this bug?" | Switching between GitHub and Jira |
+| "Who is working on what right now?" | Daily standups for status updates |
+| "Where did we discuss that decision?" | Searching Slack history for context |
 
 ---
 
@@ -102,54 +102,42 @@ Four permission tiers: `OWNER` → `ADMIN` → `MEMBER` → `VIEWER`. Enforced a
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                           CLIENT (React + Vite)                      │
-│                                                                       │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────────────┐  │
-│  │ Monaco Editor│  │ Kanban Board │  │  Chat + Presence + Feed  │  │
-│  └──────┬───────┘  └──────┬───────┘  └────────────┬─────────────┘  │
-│         │                 │                         │                │
-│  ┌──────▼─────────────────▼─────────────────────────▼─────────────┐ │
-│  │              Zustand Stores + Custom Hooks                      │ │
-│  └──────────────────────────┬────────────────────────────────────┘ │
-│                              │                                       │
-│  ┌──────────────────────────▼────────────────────────────────────┐ │
-│  │   axiosInstance (REST)           socketClient (WebSocket)      │ │
-│  │   ↳ Auth header injection        ↳ JWT auth on handshake       │ │
-│  │   ↳ Refresh token interceptor    ↳ Project room isolation      │ │
-│  └──────────────────────────┬───────────────┬──────────────────┘  │
-└─────────────────────────────┼───────────────┼────────────────────────┘
-                               │ HTTPS         │ WSS
-┌──────────────────────────────┼───────────────┼────────────────────────┐
-│                    SERVER (Node.js + Express + Socket.IO)              │
-│                               │               │                       │
-│  ┌─────────────────────────── ▼──────────┐   │                       │
-│  │  Middleware Chain (HTTP)               │   │                       │
-│  │  rateLimiter → requestId → logger      │   │                       │
-│  │  → auth → rbac → validate → handler   │   │                       │
-│  └────────────────┬───────────────────────┘   │                       │
-│                   │                           │                       │
-│  ┌────────────────▼──────────┐  ┌────────────▼──────────────────┐   │
-│  │    REST Routes (v1)        │  │  Socket.IO Handlers            │   │
-│  │  /auth /project /kanban    │  │  ↳ socketAuth (handshake JWT)  │   │
-│  │  /chat /file /webhook      │  │  editorHandler kanbanHandler   │   │
-│  └────────────────┬───────────┘  │  chatHandler presenceHandler   │   │
-│                   │              └────────────┬──────────────────┘   │
-│  ┌────────────────▼──────────────────────────▼──────────────────┐   │
-│  │                     Service Layer                              │   │
-│  │  auth · project · kanban · chat · presence · file · activity  │   │
-│  │  webhook · notification · email · collaboration               │   │
-│  └──────┬───────────────────────────────────────┬────────────────┘   │
-│         │                                       │                     │
-│  ┌──────▼───────────┐  ┌────────────────┐  ┌───▼───────────────┐   │
-│  │   MongoDB        │  │     Redis       │  │  BullMQ Queues    │   │
-│  │  User Project    │  │  Presence TTL   │  │  email.queue      │   │
-│  │  Kanban Chat     │  │  Pub/Sub        │  │  webhook.queue    │   │
-│  │  Activity File   │  │  Session Cache  │  │  → email.worker   │   │
-│  └──────────────────┘  └────────────────┘  │  → webhook.worker │   │
-│                                             └───────────────────┘   │
-└─────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph CLIENT["CLIENT — React 18 + TypeScript + Vite"]
+        direction TB
+        UI["Monaco Editor · Kanban Board · Chat · Presence · Activity Feed"]
+        HOOKS["Custom Hooks — useSocket · useAuth · usePresence · useKanban · useChat"]
+        STORE["Zustand Stores — auth · project · kanban · chat · ui"]
+        LIB["axiosInstance — auth headers + refresh interceptor"]
+        SOCK["socketClient — single connection, JWT on handshake"]
+    end
+
+    subgraph SERVER["SERVER — Node.js + Express + Socket.IO"]
+        direction TB
+        MW["Middleware Chain — rateLimiter → requestId → logger → auth → rbac → validate"]
+        REST["REST Routes  /api/v1/auth · /project · /kanban · /chat · /file · /webhook"]
+        WS["Socket.IO Handlers — editorHandler · kanbanHandler · chatHandler · presenceHandler"]
+        SVC["Service Layer — auth · project · kanban · chat · presence · file · activity · webhook · email"]
+        ERR["Global Error Handler — AppError hierarchy · isOperational flag · structured logging"]
+    end
+
+    subgraph DATA["DATA LAYER"]
+        direction LR
+        MG[("MongoDB 7\nUser · Project · Kanban\nChatMessage · Activity · File")]
+        RD[("Redis 7\nPresence TTL · Pub/Sub\nSession Cache · Queue Backend")]
+        BQ["BullMQ Workers\nemail.worker\nwebhook.worker\nauto-retry + DLQ"]
+    end
+
+    UI --> HOOKS --> STORE
+    STORE --> LIB & SOCK
+    LIB -->|"HTTPS + Bearer token"| MW
+    SOCK -->|"WSS + JWT handshake"| WS
+    MW --> REST --> SVC
+    WS --> SVC
+    SVC --> MG & RD & BQ
+    REST --> ERR
+    WS --> ERR
 ```
 
 ### Why This Architecture?
