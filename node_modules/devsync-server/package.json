@@ -1,1 +1,1 @@
-﻿{"name":"devsync-server","version":"0.1.0","private":true,"main":"src/app.ts","scripts":{"dev":"ts-node-dev --respawn src/app.ts"},"dependencies":{},"devDependencies":{},"license":"MIT"}
+{"name":"devsync-server","version":"0.1.0","private":true,"main":"src/app.ts","scripts":{"dev":"ts-node-dev --respawn src/app.ts"},"devDependencies":{"@types/express":"^5.0.6","@types/node":"^26.0.0","ts-node":"^10.9.2","ts-node-dev":"^2.0.0","typescript":"^6.0.3"},"license":"MIT","dependencies":{"dotenv":"^17.4.2","express":"^5.2.1"}}
