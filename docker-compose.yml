@@ -1,27 +1,69 @@
-version: "3.8"
+# version: "3.8"
+
+# services:
+#   mongo:
+#     image: mongo:7.0
+#     restart: unless-stopped
+#     ports:
+#       - "27018:27017"
+#     volumes:
+#       - mongo-data:/data/db
+
+#   redis:
+#     image: redis:7-alpine
+#     restart: unless-stopped
+#     ports:
+#       - "6380:6379"
+
+#   mailpit:
+#     image: axllent/mailpit:latest
+#     restart: unless-stopped
+#     ports:
+#       - "8025:8025"
+#     environment:
+#       - MAILPIT_SMTP_BIND_ADDR=0.0.0.0:1025
+
+# volumes:
+#   mongo-data:
+
+
 
 services:
   mongo:
     image: mongo:7.0
+    container_name: devsync-mongo
     restart: unless-stopped
+
     ports:
       - "27018:27017"
+
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+
     volumes:
       - mongo-data:/data/db
 
   redis:
     image: redis:7-alpine
+    container_name: devsync-redis
     restart: unless-stopped
+
     ports:
       - "6380:6379"
 
+    volumes:
+      - redis-data:/data
+
   mailpit:
     image: axllent/mailpit:latest
+    container_name: devsync-mailpit
     restart: unless-stopped
+
     ports:
       - "8025:8025"
-    environment:
-      - MAILPIT_SMTP_BIND_ADDR=0.0.0.0:1025
+      - "1025:1025"
 
 volumes:
   mongo-data:
+  redis-data:
