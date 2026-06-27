@@ -7,6 +7,7 @@
 // }
 
 
+
 import { AppError } from './AppError';
 
 // 401 Unauthorized
@@ -25,3 +26,4 @@ export class AuthError extends AppError {
     // Note: isOperational defaults to true — authentication failures are expected
   }
 }
+
