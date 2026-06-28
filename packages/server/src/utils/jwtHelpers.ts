@@ -69,6 +69,8 @@ export const signAccessToken = (
   });
 };
 
+
+
 export const verifyAccessToken = (token: string): TokenPayload => {
   try {
     // jwt.verify returns the payload if the token is valid
@@ -81,6 +83,7 @@ export const verifyAccessToken = (token: string): TokenPayload => {
     throw new AuthError('Invalid or expired access token');
   }
 };
+
 
 // ─── Refresh Token Functions ───────────────────────────────────────────────
 
@@ -99,3 +102,4 @@ export const verifyRefreshToken = (token: string): TokenPayload => {
     throw new AuthError('Invalid or expired refresh token');
   }
 };
+
