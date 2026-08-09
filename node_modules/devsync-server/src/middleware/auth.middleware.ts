@@ -30,26 +30,24 @@ export const authenticate = (
   // The standard header format is: "Authorization: Bearer eyJhbGci..."
   const authHeader = req.headers.authorization;
 
-  // Check header exists and has correct format
+
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     throw new AuthError('Access token required. Include Authorization: Bearer <token> header.');
   }
 
-  // Remove "Bearer " prefix (7 characters) to get the raw token
+
   const token = authHeader.substring(7);
+
+
 
   if (!token) {
     throw new AuthError('Access token is empty.');
   }
 
-  // verifyAccessToken throws AuthError if:
-  // - Token signature is wrong (someone tampered with it)
-  // - Token has expired (15 minute lifetime)
-  // - Token format is invalid
+ 
   const payload = verifyAccessToken(token);
 
-  // Attach payload to request — now ALL subsequent middleware and the
-  // route handler can access req.user.userId and req.user.email
+  
   req.user = payload;
 
   next();
