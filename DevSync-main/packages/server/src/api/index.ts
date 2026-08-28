@@ -1,8 +1,4 @@
-﻿// export * from "./v1";
-
-
-
-import { Router } from 'express';
+﻿import { Router } from 'express';
 import { authRouter } from './auth.routes';
 
 // ─── WHY THIS FILE EXISTS ─────────────────────────────────────────────────
