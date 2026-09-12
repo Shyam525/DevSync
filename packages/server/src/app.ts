@@ -1,4 +1,4 @@
-﻿// // import express from "express"; const app = express(); export default app;
+// // import express from "express"; const app = express(); export default app;
 
 
 // import express, { Application } from 'express';
@@ -63,6 +63,7 @@
 
 
 import express, { Application, Request, Response } from 'express';
+import cors from 'cors';
 import { env } from './config/env';
 import { connectDB } from './config/db';
 import { connectRedis } from './config/redis';
@@ -83,6 +84,11 @@ const app: Application = express();
 // ═══════════════════════════════════════════════════════════════════════════
 // MIDDLEWARE CHAIN — ORDER IS CRITICAL. DO NOT REARRANGE.
 // ═══════════════════════════════════════════════════════════════════════════
+
+// 0. CORS — MUST come before express.json() so preflight OPTIONS requests are handled
+app.use(cors({
+  origin: env.CLIENT_URL,
+}));
 
 // 1. Body parsers — MUST be first. Without this, req.body is undefined.
 //    validate() middleware reads req.body — it must come after this.

@@ -1,4 +1,5 @@
 import { TokenPayload } from '../utils/jwtHelpers';
+import { IProject } from '../models/Project';
 
 declare global {
   namespace Express {
@@ -11,6 +12,11 @@ declare global {
       // undefined if the route is public (no authentication required)
       // TokenPayload if the user is authenticated
       user?: TokenPayload;
+
+      // NEW — attached by requireProjectRole middleware.
+      // Route handlers can read req.project instead of querying the
+      // database a second time for the same document.
+      project?: IProject;
     }
   }
 }

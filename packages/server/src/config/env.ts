@@ -25,6 +25,7 @@ const envSchema = z.object({
   
   JWT_ACCESS_EXPIRES_IN: z.string().default('15m'),
   JWT_REFRESH_EXPIRES_IN: z.string().default('7d'),
+  CLIENT_URL: z.string().url().default('http://localhost:5173'),
 });
 
 // This single line does two things:

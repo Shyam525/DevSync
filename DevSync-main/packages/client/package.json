@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "@devsync/client",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@devsync/shared": "*",
+    "axios": "^1.11.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.18.0",
