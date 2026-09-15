@@ -8,6 +8,7 @@ import {
   createProjectSchema,
   inviteMemberSchema,
 } from '../../validations/project.schema';
+import { kanbanRouter } from './kanban.routes';
 
 export const projectRouter = Router();
 
@@ -16,6 +17,10 @@ export const projectRouter = Router();
 // logged in — so we apply `authenticate` once here instead of
 // repeating it on every single route.
 projectRouter.use(authenticate);
+
+// Nested router — everything under /:id/kanban/* is handled by
+// kanbanRouter, and mergeParams (Step 3) gives it access to :id.
+projectRouter.use('/:id/kanban', kanbanRouter);
 
 // POST /api/v1/projects
 // Any authenticated user can create a project — no RBAC check needed,
